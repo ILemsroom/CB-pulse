@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account — Essence{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <a href="/" class="logo">Essence<span>.</span></a>
+        <h1>Create account</h1>
+        <p class="subtitle">Start your exam preparation journey.</p>
+
+        <form>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="John Doe" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password" required />
+            </div>
+            <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="/auth/login">Sign in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

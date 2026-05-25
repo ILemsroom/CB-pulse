@@ -1,578 +1,213 @@
-<!doctype html>
+{% extends "base.html" %}
 
-<html class="dark" lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Essence | Secure Assessment Environment</title>
-        <!-- Bootstrap 5 CSS Only -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-        />
-        <!-- Google Fonts -->
-        <link
-            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&amp;family=Inter:wght@400;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-            rel="stylesheet"
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-            rel="stylesheet"
-        />
-        <style>
-            :root {
-                --obsidian-bg: #0a0a0a;
-                --surface-low: #1a1a1a;
-                --terracotta-primary: #e2725b;
-                --on-surface: #e5e2e1;
-                --border-color: #404040;
-                --font-dancing: "Dancing Script", cursive;
-                --font-mono: "JetBrains Mono", monospace;
-                --font-inter: "Inter", sans-serif;
-            }
-
-            body {
-                background-color: var(--obsidian-bg);
-                color: var(--on-surface);
-                font-family: var(--font-inter);
-                overflow-x: hidden;
-            }
-
-            /* Typography */
-            .font-dancing {
-                font-family: var(--font-dancing);
-            }
-            .font-mono {
-                font-family: var(--font-mono);
-            }
-            .text-terracotta {
-                color: var(--terracotta-primary);
-            }
-            .bg-terracotta {
-                background-color: var(--terracotta-primary);
-            }
-
-            /* Shared Components - TopNavBar mapping */
-            .navbar-essence {
-                background: rgba(10, 10, 10, 0.95);
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid var(--border-color);
-                padding: 1rem 0;
-                z-index: 1050;
-            }
-
-            .brand-logo {
-                font-family: var(--font-dancing);
-                font-size: 2rem;
-                color: var(--terracotta-primary);
-                text-decoration: none;
-            }
-
-            /* ASCII Hero */
-            .ascii-hero {
-                padding: 100px 0;
-                background: radial-gradient(
-                    circle at center,
-                    #1a1a1a 0%,
-                    #0a0a0a 100%
-                );
-            }
-
-            pre.ascii-art {
-                font-family: var(--font-mono);
-                color: var(--terracotta-primary);
-                font-size: 0.7rem;
-                line-height: 1.2;
-                overflow: hidden;
-                border-left: 2px solid var(--terracotta-primary);
-                padding-left: 2rem;
-            }
-
-            /* Cards */
-            .technical-card {
-                background-color: var(--surface-low);
-                border: 1px solid var(--border-color);
-                border-radius: 0;
-                padding: 2rem;
-                transition: all 0.3s ease;
-            }
-
-            .technical-card:hover {
-                border-color: var(--terracotta-primary);
-            }
-
-            /* Accordion Customization */
-            .accordion-item {
-                background-color: var(--surface-low);
-                border: 1px solid var(--border-color);
-                margin-bottom: 0.5rem;
-                border-radius: 0 !important;
-            }
-
-            .accordion-button {
-                background-color: var(--surface-low);
-                color: var(--on-surface);
-                font-family: var(--font-dancing);
-                font-size: 1.5rem;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-            }
-
-            .accordion-button:not(.collapsed) {
-                background-color: var(--surface-low);
-                color: var(--terracotta-primary);
-            }
-
-            .accordion-body {
-                color: var(--on-surface);
-                font-family: var(--font-mono);
-                font-size: 0.9rem;
-            }
-
-            /* Status Indicators */
-            .status-dot {
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                display: inline-block;
-                margin-right: 10px;
-            }
-
-            .status-online {
-                background-color: #4ade80;
-                box-shadow: 0 0 10px #4ade80;
-            }
-
-            /* Buttons */
-            .btn-terracotta {
-                background-color: var(--terracotta-primary);
-                color: #000;
-                font-family: var(--font-dancing);
-                font-size: 1.75rem;
-                padding: 1rem 3rem;
-                border: none;
-                border-radius: 0;
-                transition: transform 0.2s;
-            }
-
-            .btn-terracotta:hover {
-                background-color: #f08b77;
-                transform: translateY(-2px);
-                color: #000;
-            }
-
-            /* Footer & FAB */
-            .footer-essence {
-                background-color: var(--surface-low);
-                border-top: 1px solid var(--border-color);
-                padding: 3rem 0;
-                font-family: var(--font-mono);
-                font-size: 0.8rem;
-            }
-
-            .fab-support {
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                width: 60px;
-                height: 60px;
-                background-color: var(--terracotta-primary);
-                color: #000;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-                cursor: pointer;
-                z-index: 1000;
-            }
-
-            .material-symbols-outlined {
-                font-variation-settings:
-                    "FILL" 1,
-                    "wght" 400,
-                    "GRAD" 0,
-                    "opsz" 24;
-            }
-
-            @media (max-width: 768px) {
-                pre.ascii-art {
-                    font-size: 0.4rem;
-                    padding-left: 1rem;
-                }
-                .btn-terracotta {
-                    font-size: 1.25rem;
-                    width: 100%;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <!-- TopNavBar (Shared Component mapping) -->
-        <nav class="navbar navbar-essence sticky-top">
-            <div
-                class="container d-flex justify-content-between align-items-center"
-            >
-                <a class="brand-logo" href="#">Essence</a>
-                <div
-                    class="d-none d-md-block font-mono text-terracotta"
-                    id="digital-clock"
-                >
-                    System Time: 10:42:05
-                </div>
-                <button
-                    class="btn btn-outline-light btn-sm font-mono border-0 px-3 py-2"
-                    style="background: var(--surface-low)"
-                >
-                    Start Exam
-                </button>
-            </div>
-        </nav>
-        <!-- Section 1: ASCII Hero -->
-        <section class="ascii-hero">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <pre
-                            class="ascii-art"
-                            id="typewriter-target"
-                        ><!-- Content will be injected by JS for typewriter effect -->
-                    </pre>
-                    </div>
-                    <div class="col-lg-4">
-                        <h1 class="font-dancing display-4 text-terracotta mb-4">
-                            Secure Terminal
-                        </h1>
-                        <p class="font-mono text-muted mb-0">
-                            &gt; Integrity check complete.
-                        </p>
-                        <p class="font-mono text-muted">
-                            &gt; Visual biometric standby.
-                        </p>
-                        <p class="font-mono text-muted">
-                            &gt; Neural link active...
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Section 2: Lobby -->
-        <section class="py-5">
-            <div class="container">
-                <h2 class="font-dancing text-center display-5 mb-5">
-                    Standardized Assessment Portal
-                </h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="technical-card text-center h-100">
-                            <span
-                                class="material-symbols-outlined text-terracotta mb-3"
-                                style="font-size: 48px"
-                                >timer</span
-                            >
-                            <h4
-                                class="font-mono text-uppercase mb-2"
-                                style="letter-spacing: 2px"
-                            >
-                                Duration
-                            </h4>
-                            <div class="display-6 font-mono text-terracotta">
-                                120m
-                            </div>
-                            <p class="text-muted mt-3 font-mono">
-                                Standardized Time Limit
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="technical-card text-center h-100">
-                            <span
-                                class="material-symbols-outlined text-terracotta mb-3"
-                                style="font-size: 48px"
-                                >quiz</span
-                            >
-                            <h4
-                                class="font-mono text-uppercase mb-2"
-                                style="letter-spacing: 2px"
-                            >
-                                Questions
-                            </h4>
-                            <div class="display-6 font-mono text-terracotta">
-                                60
-                            </div>
-                            <p class="text-muted mt-3 font-mono">
-                                Multiple Choice &amp; Logic
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="technical-card text-center h-100">
-                            <span
-                                class="material-symbols-outlined text-terracotta mb-3"
-                                style="font-size: 48px"
-                                >verified</span
-                            >
-                            <h4
-                                class="font-mono text-uppercase mb-2"
-                                style="letter-spacing: 2px"
-                            >
-                                Threshold
-                            </h4>
-                            <div class="display-6 font-mono text-terracotta">
-                                85%
-                            </div>
-                            <p class="text-muted mt-3 font-mono">
-                                Certification Passing Mark
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Section 3: Instructions -->
-        <section class="py-5 bg-black">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="accordion" id="examAccordion">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button
-                                        class="accordion-button"
-                                        data-bs-target="#rules"
-                                        data-bs-toggle="collapse"
-                                        type="button"
-                                    >
-                                        Exam Rules
-                                    </button>
-                                </h2>
-                                <div
-                                    class="accordion-collapse collapse show"
-                                    data-bs-parent="#examAccordion"
-                                    id="rules"
-                                >
-                                    <div class="accordion-body">
-                                        [SYSTEM_LOG] Rules Protocol Alpha:<br /><br />
-                                        -&gt; No external communication devices
-                                        permitted.<br />
-                                        -&gt; Environment must remain at
-                                        zero-decibel noise levels.<br />
-                                        -&gt; Candidate must remain within view
-                                        of the terminal camera at all times.<br />
-                                        -&gt; Session terminates automatically
-                                        on tab switching detection.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button
-                                        class="accordion-button collapsed"
-                                        data-bs-target="#prohibitions"
-                                        data-bs-toggle="collapse"
-                                        type="button"
-                                    >
-                                        Prohibitions
-                                    </button>
-                                </h2>
-                                <div
-                                    class="accordion-collapse collapse"
-                                    data-bs-parent="#examAccordion"
-                                    id="prohibitions"
-                                >
-                                    <div class="accordion-body">
-                                        [SYSTEM_LOG] Restricted Actions:<br /><br />
-                                        -&gt; Use of unauthorized digital
-                                        assistants (AI/Bots).<br />
-                                        -&gt; Recording or capturing screen data
-                                        via secondary hardware.<br />
-                                        -&gt; Multiple presence detection within
-                                        camera focal range.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button
-                                        class="accordion-button collapsed"
-                                        data-bs-target="#navigation"
-                                        data-bs-toggle="collapse"
-                                        type="button"
-                                    >
-                                        Navigation Guide
-                                    </button>
-                                </h2>
-                                <div
-                                    class="accordion-collapse collapse"
-                                    data-bs-parent="#examAccordion"
-                                    id="navigation"
-                                >
-                                    <div class="accordion-body">
-                                        [SYSTEM_LOG] Interface Commands:<br /><br />
-                                        -&gt; [Next] / [Prev] to toggle
-                                        sequential data blocks.<br />
-                                        -&gt; [Mark] to flag records for logical
-                                        review.<br />
-                                        -&gt; [Finalize] to commit all answers
-                                        to the neural buffer.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Section 4: Diagnostics -->
-        <section class="py-5">
-            <div class="container text-center">
-                <h2 class="font-dancing display-5 mb-5">System Diagnostics</h2>
-                <div class="row mb-5 justify-content-center">
-                    <div class="col-auto px-4">
-                        <div class="d-flex align-items-center font-mono">
-                            <span class="status-dot status-online"></span>
-                            Browser: Verified
-                        </div>
-                    </div>
-                    <div class="col-auto px-4">
-                        <div class="d-flex align-items-center font-mono">
-                            <span class="status-dot status-online"></span>
-                            Camera: Active
-                        </div>
-                    </div>
-                    <div class="col-auto px-4">
-                        <div class="d-flex align-items-center font-mono">
-                            <span class="status-dot status-online"></span>
-                            Network: 120ms
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-terracotta shadow-lg">
-                    Verified &amp; Start Exam
-                </button>
-                <p class="mt-4 font-mono text-muted small">
-                    By clicking "Start Exam", you agree to the Essence Technical
-                    Surveillance Protocol.
-                </p>
-            </div>
-        </section>
-        <!-- Footer -->
-        <footer class="footer-essence">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div
-                        class="col-md-6 text-center text-md-start mb-4 mb-md-0"
-                    >
-                        <p class="mb-0">
-                            © 2024 Essence Technical Systems. Secure Environment
-                            Alpha-7.
-                        </p>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div
-                            class="d-flex flex-wrap justify-content-center justify-content-md-end gap-3"
-                        >
-                            <a
-                                class="text-on-surface text-decoration-none"
-                                href="#"
-                                >Privacy Policy</a
-                            >
-                            <a
-                                class="text-on-surface text-decoration-none"
-                                href="#"
-                                >System Status</a
-                            >
-                            <a
-                                class="text-on-surface text-decoration-none"
-                                href="#"
-                                >Candidate Support</a
-                            >
-                            <a
-                                class="text-on-surface text-decoration-none"
-                                href="#"
-                                >Security Protocol</a
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4 pt-4 border-top border-secondary">
-                    <div class="col-12 text-center">
-                        <img
-                            alt="Security Seal"
-                            class="opacity-50 grayscale"
-                            data-alt="A macro photograph of a professional security seal hologram sticker. The sticker glows with iridescent rainbow colors under cool studio lighting, featuring intricate geometric security patterns and a central shield icon. The background is a clean, dark obsidian surface reflecting the light subtly."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJn8k5r0MhZooJ_vWdnszpDODEt0Po2N8sZzUgUvGbKZYf2ioX6z7D9ypeDUEgnpn1OOI_O3JZVPtrAz2usZ1tX6X8V-0oCVjRLL0-um0WVtCcEafxH_Rh0tABcVJtpKYo9h5h9NxadM8mVTTvkHj7XF_W7ssQRjOxX1ALDt1mzYc3jVLtqMeCj0mO6soha_vAxL5wi8yfMjcGY6v7X1lKXLRd6gMHRnvDZ6OpRL7LPJqVXZAF5BRrcsbRhUUq7faj2HRcAwjTkc1q"
-                            style="
-                                filter: grayscale(1);
-                                width: 40px;
-                                margin: 0 10px;
-                            "
-                        />
-                        <span class="text-muted small opacity-50"
-                            >ENCRYPTED END-TO-END VIA ESSENCE CORE</span
-                        >
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- FAB -->
-        <div class="fab-support" title="Live Support">
-            <span class="material-symbols-outlined" data-weight="fill"
-                >support_agent</span
-            >
+{% block content %}
+<nav id="navbar">
+    <div class="inner">
+        <a href="/" class="logo">Essence<span>.</span></a>
+        <div class="links">
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="#faq">FAQ</a>
+            <a href="/auth/login" class="btn-nav">Get Started</a>
         </div>
-        <!-- Bootstrap 5 JS Bundle -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            // Real-time digital clock
-            function updateClock() {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString("en-GB", {
-                    hour12: false,
-                });
-                document.getElementById("digital-clock").innerText =
-                    `System Time: ${timeStr}`;
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <div class="inner">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Trusted by 10,000+ students
+        </div>
+        <h1>
+            Exam Preparation<br>
+            <span class="gradient">Reimagined</span>
+        </h1>
+        <p>
+            A modern computer-based testing platform built for medical and nursing students.
+            Practice with real past questions, get detailed explanations, and track your progress.
+        </p>
+        <div class="hero-actions">
+            <a href="/auth/register" class="btn-primary">
+                Start Free Trial
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="#features" class="btn-secondary">
+                Learn More
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="num">10,000+</div>
+                <div class="label">Students</div>
+            </div>
+            <div class="stat">
+                <div class="num">99.2%</div>
+                <div class="label">Uptime</div>
+            </div>
+            <div class="stat">
+                <div class="num">500+</div>
+                <div class="label">Exam Packs</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" style="background: var(--bg-alt);">
+    <div class="inner">
+        <h2 class="section-title reveal">Built for <span style="color: var(--primary);">Success</span></h2>
+        <p class="section-subtitle reveal">Everything you need to ace your professional exams in one platform.</p>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="icon">📝</div>
+                <h3>Real Exam Simulation</h3>
+                <p>Timed mock exams that mirror actual professional board interfaces. Grid navigation with color-coded question states.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="icon">🧠</div>
+                <h3>Detailed Rationales</h3>
+                <p>Every question includes a clinical explanation and reference tracking. Learn why answers are correct, not just which one.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="icon">📂</div>
+                <h3>Subject Filtering</h3>
+                <p>Filter questions by specialty, board, or exam year. Focus on specific topics without distractions.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="icon">⚡</div>
+                <h3>Instant Scoring</h3>
+                <p>Receive your aggregate percentage and performance breakdown the moment you submit.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="icon">🔒</div>
+                <h3>Secure Proctoring</h3>
+                <p>AI-assisted monitoring with tab-switch detection and environment verification for exam integrity.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="icon">📊</div>
+                <h3>Progress Tracking</h3>
+                <p>Monitor your performance across subjects and identify weak areas with detailed analytics.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how">
+    <div class="inner">
+        <h2 class="section-title reveal">How It <span style="color: var(--primary);">Works</span></h2>
+        <p class="section-subtitle reveal">Get started in four simple steps.</p>
+        <div class="steps-grid">
+            <div class="step-card reveal">
+                <div class="num">1</div>
+                <h4>Create Account</h4>
+                <p>Sign up and verify your identity. It takes less than 2 minutes.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="num">2</div>
+                <h4>Choose Your Exam</h4>
+                <p>Browse exam packs by specialty, board, or year. Try free samples first.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="num">3</div>
+                <h4>Practice & Learn</h4>
+                <p>Take timed exams with instant feedback and detailed rationales.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="num">4</div>
+                <h4>Track Progress</h4>
+                <p>Monitor improvement, identify weak spots, and ace your boards.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background: var(--bg-alt);">
+    <div class="inner">
+        <div class="stats-grid">
+            <div class="stat-card reveal"><div class="num">10K+</div><div class="label">Students</div></div>
+            <div class="stat-card reveal"><div class="num">99.2%</div><div class="label">Uptime</div></div>
+            <div class="stat-card reveal"><div class="num">500+</div><div class="label">Exam Packs</div></div>
+            <div class="stat-card reveal"><div class="num">150+</div><div class="label">Countries</div></div>
+        </div>
+    </div>
+</section>
+
+<section id="faq">
+    <div class="inner">
+        <h2 class="section-title reveal">Frequently Asked <span style="color: var(--primary);">Questions</span></h2>
+        <p class="section-subtitle reveal">Everything you need to know before getting started.</p>
+        <div class="faq-list">
+            <details class="faq-item reveal">
+                <summary>What equipment do I need?</summary>
+                <div class="content">A computer with a stable internet connection, a working camera, and a modern browser (Chrome, Firefox, or Edge). No additional software installation required.</div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>Can I pause the exam once started?</summary>
+                <div class="content">No. Once started, the timer runs continuously. Ensure you have uninterrupted time before beginning. Emergency pauses may be granted by a proctor in exceptional circumstances.</div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>How are results delivered?</summary>
+                <div class="content">Instant preliminary score upon submission. Official results with detailed analytics and rationales are available immediately via your dashboard.</div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>What if I lose connection during an exam?</summary>
+                <div class="content">Your session is preserved. You have 5 minutes to reconnect before auto-submission. All answers up to the disconnection point are saved.</div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>Is there a free trial?</summary>
+                <div class="content">Yes. You can attempt one partial mock exam (20 questions) for free to evaluate the platform before purchasing any exam pack.</div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<section style="background: var(--bg-alt);">
+    <div class="inner">
+        <div class="cta-section reveal">
+            <h2>Ready to <span style="color: var(--primary);">Begin</span>?</h2>
+            <p>Join thousands of medical and nursing students preparing for their professional exams.</p>
+            <a href="/auth/register" class="btn-primary" style="font-size: 1rem; padding: 1rem 2.5rem;">
+                Start Free Trial
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="inner">
+        <p>&copy; 2024 Essence. All rights reserved.</p>
+        <div class="links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Navbar scroll effect
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll reveal animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
             }
-            setInterval(updateClock, 1000);
-            updateClock();
+        });
+    }, { threshold: 0.1 });
 
-            // Typewriter ASCII Effect
-            const ascii = `
-   ______ _____ _____ ______ _   _  _____ ______
-  |  ____/ ____/ ____|  ____| \\ | |/ ____|  ____|
-  | |__ | (___| (___ | |__  |  \\| | |    | |__
-  |  __| \\___ \\\\___ \\|  __| | . \` | |    |  __|
-  | |________) |___) | |____| |\\  | |____| |____
-  |______|_____/_____/|______|_| \\_|\\_____|______|
-
-  >> SYSTEM INITIALIZATION... [OK]
-  >> KERNEL LOADED: VER 7.01... [OK]
-  >> ENCRYPTION HANDSHAKE... [OK]
-  >> READY FOR CANDIDATE INPUT...
-        `;
-
-            const target = document.getElementById("typewriter-target");
-            let index = 0;
-
-            function type() {
-                if (index < ascii.length) {
-                    target.innerHTML += ascii.charAt(index);
-                    index++;
-                    setTimeout(type, 2);
-                }
-            }
-            type();
-
-            // Micro-interaction for Diagnostics
-            document.querySelectorAll(".btn-terracotta").forEach((btn) => {
-                btn.addEventListener("click", function () {
-                    this.innerHTML =
-                        '<div class="spinner-border spinner-border-sm me-2" role="status"></div> INITIALIZING...';
-                    setTimeout(() => {
-                        this.innerHTML = "Verified & Start Exam";
-                    }, 2000);
-                });
-            });
-        </script>
-    </body>
-</html>
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+{% endblock %}
