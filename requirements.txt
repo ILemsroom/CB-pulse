@@ -1,0 +1,31 @@
+# --- Core Framework ---
+# [standard] includes uvicorn, email-validator, and jinja2
+fastapi[standard]
+
+# --- Database & Persistence ---
+# SQLAlchemy 2.0 is the modern standard for ORMs
+sqlalchemy==2.0.48
+# Async driver for PostgreSQL
+asyncpg==0.30.0
+# Migration tool (Essential for medical data schema updates)
+alembic==1.13.1
+
+# --- Validation & Security ---
+# Already in fastapi[standard], but good to pin for safety
+pydantic==2.12.5
+# Environment variable management
+python-dotenv==1.0.1
+# Password hashing
+passlib[bcrypt]==1.7.4
+# JWT Token handling
+python-jose[cryptography]==3.3.0
+
+# --- Networking & Integration ---
+# High-performance client for external APIs (like Paystack)
+httpx==0.28.1
+# Required for handling file uploads (e.g., student ID/NIN)
+python-multipart==0.0.22
+
+# --- Production Server ---
+# While uvicorn is included, gunicorn is often used as a process manager
+gunicorn==22.0.0
